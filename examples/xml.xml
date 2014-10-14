@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Distributed under the MIT license. See the LICENSE file. -->
+<rootElement attribute="attribute value" secondAttribute="value">
+  <childElement>
+    <row>
+      <cdataElement><![CDATA[Label as CDATA]]></cdataElement>
+      <emptyElement/>
+    </row>
+    <row>
+      <someOtherElement>Hey</someOtherElement>
+    </row>
+  </childElement>
+</rootElement>
