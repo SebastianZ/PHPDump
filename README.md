@@ -4,6 +4,12 @@ PHP version of [ColdFusion's `<cfdump>`](https://wikidocs.adobe.com/wiki/display
 
 The benefits in comparison to [`var_dump()`](http://de2.php.net/manual/function.var-dump.php) are that it outputs variables in a visually appealing format and provides more information.
 
+Differences to [Josh Sherman's 'dBug'](https://github.com/ospinto/dBug) are:
+* Arrays are displayed differently depending on whether they are indexed or associative
+* Objects are displayed like in ColdFusion
+* PHPDoc info is included in object output
+* Distributed under MIT license
+
 ## Features
 * Displays variables in a structured and colored format
 * Provides advanced information on objects and resources
