@@ -2,7 +2,7 @@
 
 PHP version of [ColdFusion's `<cfdump>`](https://wikidocs.adobe.com/wiki/display/coldfusionen/cfdump).
 
-# Usage
+## Usage
 
 You just need to include the debug.php file:
 
@@ -16,8 +16,8 @@ When that is done you can output a variable like this:
 dump($variable);
 ```
 
-# Examples
-## Indexed array
+## Examples
+### Indexed array
 Code:
 ```
 $arr = ['a', 'b', 'c'];
@@ -39,7 +39,7 @@ Output:
 
 ![Dump of an associative array](https://cloud.githubusercontent.com/assets/958943/4642532/32a1833c-5446-11e4-8946-c49c09f3359d.png)
 
-## Object
+### Object
 Code:
 ```
 class SimpleClass {
@@ -61,7 +61,7 @@ Output:
 
 ![Dump of an object](https://cloud.githubusercontent.com/assets/958943/4642630/6b644ad2-5447-11e4-9cb3-79e0561af016.png)
 
-## Database query result (PDO)
+### Database query result (PDO)
 Code:
 ```
 $db = new PDO('pgsql:host=localhost;dbname=mydb', 'user', 'password');
@@ -79,7 +79,7 @@ Output:
 ![Dump of a query result](https://cloud.githubusercontent.com/assets/958943/4642926/3a28adfc-544a-11e4-9c77-fc2e7372c7ba.png)
 
 
-## XML (SimpleXML)
+### XML (SimpleXML)
 Code:
 ```
 $xml = simplexml_load_file('XMLFile.xml');
