@@ -2,6 +2,13 @@
 
 PHP version of [ColdFusion's `<cfdump>`](https://wikidocs.adobe.com/wiki/display/coldfusionen/cfdump).
 
+The benefits in comparison to [`var_dump()`](http://de2.php.net/manual/function.var-dump.php) are that it outputs variables in a visually appealing format and provides more information.
+
+## Features
+* Displays variables in a structured and colored format
+* Provides advanced information on objects and resources
+* Supported variable types are: All primitive types, arrays, objects, PDO query results, SimpleXML resources
+
 ## Usage
 
 You just need to include the debug.php file:
