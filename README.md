@@ -65,7 +65,10 @@ Output:
 Code:
 ```
 $db = new PDO('pgsql:host=localhost;dbname=mydb', 'user', 'password');
-$select = $db->prepare('SELECT * FROM persons WHERE LastName LIKE :LastName ORDER BY LastName ASC');
+$select = $db->prepare('SELECT *
+                        FROM persons
+                        WHERE LastName LIKE :LastName
+                        ORDER BY LastName ASC');
 $select->execute([':LastName' => 'M%']);
 
 dump($select);
