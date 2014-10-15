@@ -1,6 +1,6 @@
 # PHPDump
 
-PHP version of ColdFusion's &lt;cfdump&gt;
+PHP version of [ColdFusion's `<cfdump>`](https://wikidocs.adobe.com/wiki/display/coldfusionen/cfdump).
 
 # Usage
 
