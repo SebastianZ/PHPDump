@@ -43,7 +43,3 @@ $vars = [
 
   </body>
 </html>
-
-<?php
-endOutput();
-?>

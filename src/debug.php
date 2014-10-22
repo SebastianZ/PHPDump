@@ -12,9 +12,192 @@ class DBG {
   private $var;
   private $docParser;
 
-  function __construct($var) {
-    $this->var = $var;
+  function __construct() {
     $this->docParser = new DocParser();
+  }
+
+  function __destruct() {
+    $this->injectStyleSheet();
+  }
+
+  private function injectStyleSheet() {
+    define('CLOSING_HEAD_TAG', '</head>');
+    define('CLOSING_BODY_TAG', '</body>');
+
+    $debugStyleSheet = <<<STYLESHEET
+        <style type="text/css">
+        .debug,
+        .debug table {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: xx-small;
+            border-collapse: collapse;
+        }
+
+        .debug TD {
+            padding: 3px;
+        }
+
+        .debug TH {
+            padding: 5px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .debug > THEAD > TR > TH,
+        .debug > TBODY > TR > TD {
+            border: 2px solid #000;
+            vertical-align: top;
+        }
+
+        .debug .label {
+            cursor: pointer;
+        }
+
+        .boolean,
+        .emptyString,
+        .null {
+            font-style: italic;
+        }
+
+        .indexedArray > THEAD > TR > TH,
+        .indexedArray > TBODY > TR > TD {
+            border-color: #060;
+        }
+
+        .indexedArray .label {
+            background-color: #cfc;
+        }
+
+        .indexedArray > THEAD > TR > TH {
+            background-color: #090;
+            color: #fff;
+        }
+
+        .associativeArray > THEAD > TR > TH,
+        .associativeArray > TBODY > TR > TD {
+            border-color: #00c;
+        }
+
+        .associativeArray .label {
+            background-color: #cdf;
+        }
+
+        .associativeArray > THEAD > TR > TH {
+            background-color: #44c;
+            color: #fff;
+        }
+
+        .object > THEAD > TR > TH,
+        .object > TBODY > TR > TD {
+            border-color: #e00;
+        }
+
+        .props > TBODY > TR > TD,
+        .methods > TBODY > TR > TD {
+            border: 2px solid #e00;
+            vertical-align: top;
+        }
+
+        .object .prop > .label {
+            background-color: #fcc;
+        }
+
+        .object > TBODY > TR > .label,
+        .methods > TBODY > TR > .label {
+            background-color: #f9a;
+        }
+
+        .object > THEAD > TR > TH {
+            background-color: #f44;
+            color: #fff;
+        }
+
+        .methodInfo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .methodInfo > DIV {
+            display: flex;
+        }
+
+        .methodInfo SPAN.label {
+            display: inline-block;
+            width: 80px;
+            background-color: #fff;
+            font-style: italic;
+        }
+
+        .args > THEAD > TR > TH,
+        .args > TBODY > TR > TD {
+            border: 2px solid #ddd;
+        }
+
+        .args > THEAD > TR > TH {
+            background-color: #eee;
+        }
+
+        .args > THEAD > TR > TH {
+            background-color: #eee;
+        }
+
+  		  .query > THEAD > TR > TH,
+        .query > TBODY > TR > TD,
+  		  .queryResult > THEAD > TR > TH,
+        .queryResult > TBODY > TR > TD {
+            border-color: #848;
+        }
+
+        .query > TBODY > TR > TD:first-child,
+  		  .queryResult > TBODY > TR:first-child > TD,
+        .queryResult > TBODY > TR > TD:first-child {
+            background-color: #fdf;
+        }
+
+        .query > THEAD > TR > TH,
+        .queryResult > THEAD > TR > TH {
+            background-color: #a6a;
+            color: #fff;
+        }
+
+        .xml > THEAD > TR > TH,
+        .xml > TBODY > TR > TD {
+            border: 2px solid #888;
+        }
+
+        .xml > TBODY > TR > .label {
+            background-color: #ddd;
+        }
+
+        .xml > THEAD > TR > TH {
+            background-color: #aaa;
+            color: #fff;
+        }
+        </style>
+STYLESHEET;
+
+    $out = ob_get_contents();
+    ob_end_clean();
+
+    $closingTagPos = stripos($out, CLOSING_HEAD_TAG);
+    if ($closingTagPos !== false) {
+      $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
+      CLOSING_HEAD_TAG . substr($out, $closingTagPos + strlen(CLOSING_HEAD_TAG));
+    } else {
+      $closingTagPos = stripos($out, CLOSING_BODY_TAG);
+      if ($closingTagPos !== false) {
+        $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
+        CLOSING_BODY_TAG . substr($out, $closingTagPos + strlen(CLOSING_BODY_TAG));
+      } else
+        $out += $debugStyleSheet;
+    }
+
+    echo $out;
+  }
+
+  function dump($var) {
+    $this->var = $var;
+    echo $this;
   }
 
   private function isIndexedArray($arr) {
@@ -383,182 +566,11 @@ OUTPUT;
   }
 }
 
+$DBG = new DBG();
+
 function dump($var) {
-  echo new DBG($var);
-}
+  global $DBG;
 
-function endOutput() {
-  define('CLOSING_HEAD_TAG', '</head>');
-  define('CLOSING_BODY_TAG', '</body>');
-
-  $debugStyleSheet = <<<STYLESHEET
-        <style type="text/css">
-        .debug,
-        .debug table {
-            font-family: Verdana, Arial, Helvetica, sans-serif;
-            font-size: xx-small;
-            border-collapse: collapse;
-        }
-
-        .debug TD {
-            padding: 3px;
-        }
-
-        .debug TH {
-            padding: 5px;
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .debug > THEAD > TR > TH,
-        .debug > TBODY > TR > TD {
-            border: 2px solid #000;
-            vertical-align: top;
-        }
-
-        .debug .label {
-            cursor: pointer;
-        }
-
-        .boolean,
-        .emptyString,
-        .null {
-            font-style: italic;
-        }
-
-        .indexedArray > THEAD > TR > TH,
-        .indexedArray > TBODY > TR > TD {
-            border-color: #060;
-        }
-
-        .indexedArray .label {
-            background-color: #cfc;
-        }
-
-        .indexedArray > THEAD > TR > TH {
-            background-color: #090;
-            color: #fff;
-        }
-
-        .associativeArray > THEAD > TR > TH,
-        .associativeArray > TBODY > TR > TD {
-            border-color: #00c;
-        }
-
-        .associativeArray .label {
-            background-color: #cdf;
-        }
-
-        .associativeArray > THEAD > TR > TH {
-            background-color: #44c;
-            color: #fff;
-        }
-
-        .object > THEAD > TR > TH,
-        .object > TBODY > TR > TD {
-            border-color: #e00;
-        }
-
-        .props > TBODY > TR > TD,
-        .methods > TBODY > TR > TD {
-            border: 2px solid #e00;
-            vertical-align: top;
-        }
-
-        .object .prop > .label {
-            background-color: #fcc;
-        }
-
-        .object > TBODY > TR > .label,
-        .methods > TBODY > TR > .label {
-            background-color: #f9a;
-        }
-
-        .object > THEAD > TR > TH {
-            background-color: #f44;
-            color: #fff;
-        }
-
-        .methodInfo {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .methodInfo > DIV {
-            display: flex;
-        }
-
-        .methodInfo SPAN.label {
-            display: inline-block;
-            width: 80px;
-            background-color: #fff;
-            font-style: italic;
-        }
-
-        .args > THEAD > TR > TH,
-        .args > TBODY > TR > TD {
-            border: 2px solid #ddd;
-        }
-
-        .args > THEAD > TR > TH {
-            background-color: #eee;
-        }
-
-        .args > THEAD > TR > TH {
-            background-color: #eee;
-        }
-
-  		  .query > THEAD > TR > TH,
-        .query > TBODY > TR > TD,
-  		  .queryResult > THEAD > TR > TH,
-        .queryResult > TBODY > TR > TD {
-            border-color: #848;
-        }
-
-        .query > TBODY > TR > TD:first-child,
-  		  .queryResult > TBODY > TR:first-child > TD,
-        .queryResult > TBODY > TR > TD:first-child {
-            background-color: #fdf;
-        }
-
-        .query > THEAD > TR > TH,
-        .queryResult > THEAD > TR > TH {
-            background-color: #a6a;
-            color: #fff;
-        }
-
-        .xml > THEAD > TR > TH,
-        .xml > TBODY > TR > TD {
-            border: 2px solid #888;
-        }
-
-        .xml > TBODY > TR > .label {
-            background-color: #ddd;
-        }
-
-        .xml > THEAD > TR > TH {
-            background-color: #aaa;
-            color: #fff;
-        }
-        </style>
-STYLESHEET;
-
-  $out = ob_get_contents();
-  ob_end_clean();
-
-  $closingTagPos = stripos($out, CLOSING_HEAD_TAG);
-  if ($closingTagPos !== false) {
-    $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
-        CLOSING_HEAD_TAG . substr($out, $closingTagPos + strlen(CLOSING_HEAD_TAG));
-  } else {
-    $closingTagPos = stripos($out, CLOSING_BODY_TAG);
-    if ($closingTagPos !== false) {
-      $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
-          CLOSING_BODY_TAG . substr($out, $closingTagPos + strlen(CLOSING_BODY_TAG));
-    } else
-      $out += $debugStyleSheet;
-  }
-
-  echo $out;
+  echo $DBG->dump($var);
 }
 ?>
