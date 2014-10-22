@@ -106,7 +106,7 @@ Output:
 
 ## Version history
 ### 0.2
-* Added code folding ([Issue #2](https://github.com/SebastianZ/PHPDump/issues/2))
+* Added output folding ([Issue #2](https://github.com/SebastianZ/PHPDump/issues/2))
 * Removed need to add `endOutput();` at the end of the script ([Issue #1](https://github.com/SebastianZ/PHPDump/issues/1))
 
 ### 0.1 Initial version
