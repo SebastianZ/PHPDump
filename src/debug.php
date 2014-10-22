@@ -21,8 +21,8 @@ class DBG {
   }
 
   private function injectStyleSheet() {
-    define('CLOSING_HEAD_TAG', '</head>');
-    define('CLOSING_BODY_TAG', '</body>');
+    $closingHeadTag = '</head>';
+    $closingBodyTag = '</body>';
 
     $debugStyleSheet = <<<STYLESHEET
         <style type="text/css">
@@ -179,15 +179,15 @@ STYLESHEET;
     $out = ob_get_contents();
     ob_end_clean();
 
-    $closingTagPos = stripos($out, CLOSING_HEAD_TAG);
+    $closingTagPos = stripos($out, $closingHeadTag);
     if ($closingTagPos !== false) {
       $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
-      CLOSING_HEAD_TAG . substr($out, $closingTagPos + strlen(CLOSING_HEAD_TAG));
+      $closingHeadTag . substr($out, $closingTagPos + strlen($closingHeadTag));
     } else {
-      $closingTagPos = stripos($out, CLOSING_BODY_TAG);
+      $closingTagPos = stripos($out, $closingBodyTag);
       if ($closingTagPos !== false) {
         $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
-        CLOSING_BODY_TAG . substr($out, $closingTagPos + strlen(CLOSING_BODY_TAG));
+        $closingBodyTag . substr($out, $closingTagPos + strlen($closingBodyTag));
       } else
         $out += $debugStyleSheet;
     }
