@@ -22,9 +22,6 @@ $vars = [
   $xml,
   $file
 ];
-
-if (function_exists('imagecreate'))
-  array_push($vars, imagecreate(100, 100));
 ?>
 
 <!DOCTYPE html>
