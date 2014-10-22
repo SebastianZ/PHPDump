@@ -12,6 +12,7 @@ Differences to [Josh Sherman's 'dBug'](https://github.com/ospinto/dBug) are:
 
 ## Features
 * Displays variables in a structured and colored format
+* Output is foldable
 * Provides advanced information on objects and resources
 * Supported variable types are: All primitive types, arrays, objects, PDO query results, SimpleXML resources
 
