@@ -204,6 +204,23 @@ class DBG {
             background-color: #aaa;
             color: #fff;
         }
+
+        .resource {
+            background-color: #eebb40;
+        }
+
+        .resource > THEAD > TR > TH,
+        .resource > TBODY > TR > TD {
+            border-color: #eebb40;
+        }
+
+        .resource .label {
+            background-color: #fedc83;
+        }
+
+        .resource > THEAD > TR > TH {
+            background-color: #fecc46;
+        }
         </style>
 STYLESHEET;
 
@@ -586,7 +603,30 @@ OUTPUT;
   }
 
   private function dumpResource($var) {
-    return get_resource_type($var);
+    $type = get_resource_type($var);
+    $number = preg_replace('/^.*#(\d+)$/', '\1', (string)$var);
+
+    $out = <<<OUTPUT
+      <table class="debug resource">
+        <thead>
+          <tr>
+            <th colspan="2">Resource</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Type</td>
+            <td>{$type}</td>
+          </tr>
+          <tr>
+            <td class="label">ID</td>
+            <td>{$number}</td>
+          </tr>
+        </tbody>
+      </table>
+OUTPUT;
+
+    return $out;
   }
 
   private function dumpDefault($var) {
