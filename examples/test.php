@@ -9,6 +9,7 @@ $select = $dbh->prepare('SELECT * FROM persons WHERE sLastName LIKE :sLastName')
 $select->execute([':sLastName' => 'M%']);
 
 $xml = simplexml_load_file('xml.xml');
+$file = fopen('text.txt', 'r');
 
 $vars = [
   true,
@@ -18,8 +19,12 @@ $vars = [
   ['brand' => 'Audi', 'model' => 'A8'],
   new Person('Hans', 'Meier', new DateTime('1967-03-15')),
   $select,
-  $xml
-]
+  $xml,
+  $file
+];
+
+if (function_exists('imagecreate'))
+  array_push($vars, imagecreate(100, 100));
 ?>
 
 <!DOCTYPE html>
