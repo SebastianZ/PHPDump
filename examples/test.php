@@ -32,14 +32,14 @@ $vars = [
   <body>
 
 <?php
-  if (isset($_GET['pretty'])) {
-    foreach ($vars as $var)
-      dump($var);
-  } else {
+  if (isset($_GET['ugly'])) {
     echo '<pre>';
     foreach ($vars as $var)
       var_dump($var);
     echo '</pre>';
+  } else {
+    foreach ($vars as $var)
+      dump($var);
   }
 ?>
 
