@@ -35,6 +35,7 @@ class DBG {
 
         .debug TD {
             padding: 3px;
+            background-color: #fff;
         }
 
         .debug TH {
@@ -53,10 +54,22 @@ class DBG {
             cursor: pointer;
         }
 
+        .debug.collapsed, .label.collapsed {
+            font-style: italic;
+        }
+
+        .debug.collapsed > tbody, .label.collapsed + * {
+            display: none;
+        }
+
         .boolean,
         .emptyString,
         .null {
             font-style: italic;
+        }
+
+        .indexedArray {
+            background-color: #060;
         }
 
         .indexedArray > THEAD > TR > TH,
@@ -85,6 +98,16 @@ class DBG {
         .associativeArray > THEAD > TR > TH {
             background-color: #44c;
             color: #fff;
+        }
+
+        .associativeArray {
+            background-color: #00c;
+        }
+
+        .object,
+        .props,
+        .methods {
+            background-color: #e00;
         }
 
         .object > THEAD > TR > TH,
@@ -126,6 +149,7 @@ class DBG {
             width: 80px;
             background-color: #fff;
             font-style: italic;
+            cursor: auto;
         }
 
         .args > THEAD > TR > TH,
@@ -135,13 +159,15 @@ class DBG {
 
         .args > THEAD > TR > TH {
             background-color: #eee;
+            cursor: auto;
         }
 
-        .args > THEAD > TR > TH {
-            background-color: #eee;
+        .query,
+        .queryResult {
+            background-color: #848;
         }
 
-  		  .query > THEAD > TR > TH,
+        .query > THEAD > TR > TH,
         .query > TBODY > TR > TD,
   		  .queryResult > THEAD > TR > TH,
         .queryResult > TBODY > TR > TD {
@@ -160,6 +186,10 @@ class DBG {
             color: #fff;
         }
 
+        .xml {
+            background-color: #888;
+        }
+
         .xml > THEAD > TR > TH,
         .xml > TBODY > TR > TD {
             border: 2px solid #888;
@@ -176,17 +206,40 @@ class DBG {
         </style>
 STYLESHEET;
 
+    $debugScript = <<<SCRIPT
+        <script type="application/javascript">
+        function toggleDisplay(evt) {
+          var element = evt.target;
+          while (element && !(element.classList.contains("label") || element.nodeName === "TABLE"))
+            element = element.parentElement;
+
+          element.classList.toggle("collapsed");
+
+          element.setAttribute("title", element.classList.contains("collapsed") ? "Click to expand" : "Click to collapse");
+
+        }
+
+        window.addEventListener("load", function() {
+          var debugOutput = document.querySelectorAll(".debug > thead > tr > th, .debug td.label");
+          for (var i = 0; i < debugOutput.length; i++) {
+            debugOutput[i].setAttribute("title", "Click to collapse");
+            debugOutput[i].addEventListener("click", toggleDisplay);
+          }
+        });
+        </script>
+SCRIPT;
+
     $out = ob_get_contents();
     ob_end_clean();
 
     $closingTagPos = stripos($out, $closingHeadTag);
     if ($closingTagPos !== false) {
-      $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
+      $out = substr($out, 0, $closingTagPos) . $debugStyleSheet . $debugScript .
       $closingHeadTag . substr($out, $closingTagPos + strlen($closingHeadTag));
     } else {
       $closingTagPos = stripos($out, $closingBodyTag);
       if ($closingTagPos !== false) {
-        $out = substr($out, 0, $closingTagPos) . $debugStyleSheet .
+        $out = substr($out, 0, $closingTagPos) . $debugStyleSheet . $debugScript .
         $closingBodyTag . substr($out, $closingTagPos + strlen($closingBodyTag));
       } else
         $out += $debugStyleSheet;
@@ -357,7 +410,7 @@ OUTPUT;
             </thead>
             <tbody>
                 <tr>
-                    <td>Result set</td>
+                    <td class="label">Result set</td>
                     <td>
 							    	  <table class="debug queryResult">
 							            <thead>
@@ -392,7 +445,7 @@ OUTPUT;
               </td>
         		</tr>
         		<tr>
-        		  <td>SQL</td>
+        		  <td class="label">SQL</td>
         		  <td>{$var->queryString}</td>
             </tr>
           </tbody>
