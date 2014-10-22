@@ -118,6 +118,10 @@ Output:
 
 
 ## Version history
+### 0.3
+* Added output of resources ([Issue #3](https://github.com/SebastianZ/PHPDump/issues/3))
+* Made PHPDump the default in the example
+
 ### 0.2
 * Added output folding ([Issue #2](https://github.com/SebastianZ/PHPDump/issues/2))
 * Removed need to add `endOutput();` at the end of the script ([Issue #1](https://github.com/SebastianZ/PHPDump/issues/1))
