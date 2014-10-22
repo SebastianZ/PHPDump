@@ -14,7 +14,7 @@ Differences to [Josh Sherman's 'dBug'](https://github.com/ospinto/dBug) are:
 * Displays variables in a structured and colored format
 * Output is foldable
 * Provides advanced information on objects and resources
-* Supported variable types are: All primitive types, arrays, objects, PDO query results, SimpleXML resources
+* Supported variable types are: All primitive types, arrays, objects, PDO query results, SimpleXML objects, resources
 
 ## Usage
 
@@ -103,6 +103,19 @@ dump($xml);
 Output:
 
 ![Dump of an XML](https://cloud.githubusercontent.com/assets/958943/4642998/0e97fb10-544b-11e4-921b-d99474e7c40c.png)
+
+
+### Resources
+Code:
+```
+$file = fopen('file.xyz', 'r');
+dump($file);
+```
+
+Output:
+
+![Dump of a resource](https://cloud.githubusercontent.com/assets/958943/4737350/4f0a51c6-59f4-11e4-9cfe-1b822d1e4451.png)
+
 
 ## Version history
 ### 0.2
