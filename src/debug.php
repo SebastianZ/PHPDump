@@ -18,10 +18,6 @@ class DBG {
   }
 
   function __destruct() {
-    $this->injectStyleSheet();
-  }
-
-  private function injectStyleSheet() {
     $closingHeadTag = '</head>';
     $closingBodyTag = '</body>';
 
