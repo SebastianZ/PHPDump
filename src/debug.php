@@ -659,8 +659,6 @@ OUTPUT;
 $DBG = new DBG();
 
 function dump($var) {
-  global $DBG;
-
-  echo $DBG->dump($var);
+  echo $GLOBALS['DBG']->dump($var);
 }
 ?>
