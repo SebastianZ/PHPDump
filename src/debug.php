@@ -260,7 +260,7 @@ SCRIPT;
         $out = substr($out, 0, $closingTagPos) . $debugStyleSheet . $debugScript .
         $closingBodyTag . substr($out, $closingTagPos + strlen($closingBodyTag));
       } else
-        $out += $debugStyleSheet;
+        $out .= $debugStyleSheet;
     }
 
     echo $out;
