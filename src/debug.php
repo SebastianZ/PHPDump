@@ -287,12 +287,18 @@ SCRIPT;
     return '<div class="null">NULL</div>';
   }
 
-  private function dumpArray($var) {
+  private function dumpArray(&$var) {
     $isIndexedArray = $this->isIndexedArray($var);
     $class = $isIndexedArray ? 'indexedArray' : 'associativeArray';
     $title = $isIndexedArray ? 'Indexed Array' : 'Associative Array';
     if (count($var) === 0)
       $title .= ' [empty]';
+
+    // Avoid recursions
+    if (isset($var['__been_here']))
+        return 'RECURSION';
+
+    $var['__been_here'] = true;
 
     $out = <<<OUTPUT
       <table class="debug {$class}">
@@ -304,7 +310,10 @@ SCRIPT;
         <tbody>
 OUTPUT;
 
-    foreach ($var as $key => $value) {
+    foreach ($var as $key => &$value) {
+      if ($key === '__been_here')
+          continue;
+
       $out .= <<< OUTPUT
           <tr>
             <td class="label">{$key}</td>
@@ -317,6 +326,8 @@ OUTPUT;
         </tbody>
       </table>
 OUTPUT;
+
+    unset($var['__been_here']);
 
     return $out;
   }
@@ -629,7 +640,7 @@ OUTPUT;
     return $var === '' ? '<div class="emptyString">[empty string]</div>' : '<div>' . (string) $var . '</div>';
   }
 
-  private function dumpVariable($var) {
+  private function dumpVariable(&$var) {
     switch (gettype($var)) {
       case 'boolean':
         return $this->dumpBoolean($var);
