@@ -427,8 +427,14 @@ OUTPUT;
     }
   }
 
-  private function dumpObject($var) {
+  private function dumpObject(&$var) {
     $reflection = new ReflectionObject($var);
+
+    // Avoid recursions
+    if (isset($var->__been_here))
+        return $this->dumpRecursion();
+
+    $var->__been_here = true;
 
     switch ($reflection->name) {
     	case 'PDOStatement':
@@ -618,6 +624,8 @@ OUTPUT;
       </table>
 OUTPUT;
     }
+
+    unset($var->__been_here);
 
     return $out;
   }
