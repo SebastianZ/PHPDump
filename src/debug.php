@@ -12,6 +12,7 @@ ob_start();
 class DBG {
   private $var;
   private $docParser;
+  private $outputDoc;
 
   function __construct() {
     $this->docParser = new DocParser();
@@ -266,8 +267,9 @@ SCRIPT;
     echo $out;
   }
 
-  function dump($var) {
+  function dump($var, $outputDoc) {
     $this->var = $var;
+    $this->outputDoc = $outputDoc;
     echo $this;
   }
 
@@ -395,26 +397,29 @@ OUTPUT;
                           </div>
 OUTPUT;
 
-      $description = $var->getDocComment();
-      if ($description !== false) {
-      	$this->docParser->parse($description);
+      if ($this->outputDoc) {
+        $description = $var->getDocComment();
+        if ($description !== false) {
+          $this->docParser->parse($description);
 
-        $shortDescription = $this->docParser->getShortDesc();
-        $out .= <<< OUTPUT
+          $shortDescription = $this->docParser->getShortDesc();
+          $out .= <<< OUTPUT
       	                  <div>
 	                          <span class="label">Description:</span>
 	                          <span>{$this->dumpVariable($shortDescription)}</span>
 	                        </div>
 OUTPUT;
 
-        $returnTag = $this->docParser->getTag('return');
-        if ($returnTag !== [])
-        $out .= <<< OUTPUT
+          $returnTag = $this->docParser->getTag('return');
+          if ($returnTag !== []) {
+            $out .= <<< OUTPUT
       	                  <div>
 	                          <span class="label">Return value:</span>
 	                          <span>{$this->dumpVariable($returnTag['type'])}</span>
 	                        </div>
 OUTPUT;
+          }
+        }
       }
 
       $out .= <<< OUTPUT
@@ -689,7 +694,7 @@ OUTPUT;
 
 $DBG = new DBG();
 
-function dump($var) {
-  echo $GLOBALS['DBG']->dump($var);
+function dump($var, $outputDoc = true) {
+  echo $GLOBALS['DBG']->dump($var, $outputDoc);
 }
 ?>
