@@ -365,6 +365,7 @@ OUTPUT;
 OUTPUT;
 
         foreach ($params as $param) {
+          $isOptional = $param->isOptional();
           try {
             $defaultValue = $param->getDefaultValue();
           } catch (Exception $e) {
@@ -373,7 +374,7 @@ OUTPUT;
           $out .= <<< OUTPUT
                               <tr>
                                 <td>{$param->name}</td>
-                                <td>{$this->dumpVariable($param->isOptional())}</td>
+                                <td>{$this->dumpVariable($isOptional)}</td>
                                 <td>{$this->dumpVariable($defaultValue)}</td>
                               </tr>
 OUTPUT;
@@ -386,10 +387,11 @@ OUTPUT;
       } else
           $out .= '<span>none</span>';
 
+      $isStatic = $var->isStatic();
       $out .= <<< OUTPUT
                           <div>
                             <span class="label">Static:</span>
-                            <span>{$this->dumpVariable($var->isStatic())}</span>
+                            <span>{$this->dumpVariable($isStatic)}</span>
                           </div>
 OUTPUT;
 
@@ -397,10 +399,11 @@ OUTPUT;
       if ($description !== false) {
       	$this->docParser->parse($description);
 
+        $shortDescription = $this->docParser->getShortDesc();
         $out .= <<< OUTPUT
       	                  <div>
 	                          <span class="label">Description:</span>
-	                          <span>{$this->dumpVariable($this->docParser->getShortDesc())}</span>
+	                          <span>{$this->dumpVariable($shortDescription)}</span>
 	                        </div>
 OUTPUT;
 
@@ -566,11 +569,12 @@ OUTPUT;
 
 		      foreach ($props as $prop) {
 		        $prop->setAccessible(true);
+                        $value = $prop->getValue($var);
 
 		        $out .= <<< OUTPUT
                   <tr class="prop">
                     <td class="label">{$prop->name}</td>
-                    <td>{$this->dumpVariable($prop->getValue($var))}</td>
+                    <td>{$this->dumpVariable($value)}</td>
                   </tr>
 OUTPUT;
 		      }
