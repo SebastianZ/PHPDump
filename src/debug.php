@@ -490,6 +490,7 @@ OUTPUT;
     	  break;
 
     	case 'SimpleXMLElement':
+            $varString = $var->__toString();
     		$out = <<<OUTPUT
         <table class="debug xml">
           <thead>
@@ -505,7 +506,7 @@ OUTPUT;
                   <tbody>
                     <tr>
                       <td class="label">XmlText</td>
-	                    <td>{$this->dumpVariable($var->__toString())}</td>
+	                    <td>{$this->dumpVariable($varString)}</td>
 	                  </tr>
 OUTPUT;
 
