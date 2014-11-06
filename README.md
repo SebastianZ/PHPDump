@@ -118,6 +118,11 @@ Output:
 
 
 ## Version history
+### 0.4
+* Fixed output for the case no <body> or <head> tag can be found
+* Added recursion detection
+* Fixed styling issues
+
 ### 0.3
 * Added output of resources ([Issue #3](https://github.com/SebastianZ/PHPDump/issues/3))
 * Made PHPDump the default in the example

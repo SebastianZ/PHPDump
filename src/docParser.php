@@ -1,6 +1,6 @@
 <?php
 /*
- * Version 0.3 - Sebastian Zartner
+ * Version 0.4 - Sebastian Zartner
  *
  * Distributed under the MIT license. See the LICENSE file.
  */
