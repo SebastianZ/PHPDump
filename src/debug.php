@@ -59,6 +59,10 @@ class DBG {
             display: none;
         }
 
+        .recursion {
+            font-style: italic;
+        }
+
         .boolean,
         .emptyString,
         .null {
@@ -279,6 +283,10 @@ SCRIPT;
     return true;
   }
 
+  private function dumpRecursion() {
+    return '<span class="recursion">*RECURSION*</span>';
+  }
+
   private function dumpBoolean($var) {
     return '<div class="boolean">' . ($var ? 'TRUE' : 'FALSE') . '</div>';
   }
@@ -296,7 +304,7 @@ SCRIPT;
 
     // Avoid recursions
     if (isset($var['__been_here']))
-        return 'RECURSION';
+        return $this->dumpRecursion();
 
     $var['__been_here'] = true;
 
