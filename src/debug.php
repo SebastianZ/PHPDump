@@ -430,12 +430,6 @@ OUTPUT;
   private function dumpObject(&$var) {
     $reflection = new ReflectionObject($var);
 
-    // Avoid recursions
-    if (isset($var->__been_here))
-        return $this->dumpRecursion();
-
-    $var->__been_here = true;
-
     switch ($reflection->name) {
     	case 'PDOStatement':
     		$colCount = $var->columnCount();
@@ -554,6 +548,12 @@ OUTPUT;
     		break;
 
       default:
+        // Avoid recursions
+        if (isset($var->__been_here))
+            return $this->dumpRecursion();
+
+        $var->__been_here = true;
+
         $out = <<<OUTPUT
       <table class="debug object">
         <thead>
@@ -623,9 +623,8 @@ OUTPUT;
         </tbody>
       </table>
 OUTPUT;
+        unset($var->__been_here);
     }
-
-    unset($var->__been_here);
 
     return $out;
   }
