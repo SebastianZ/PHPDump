@@ -34,6 +34,7 @@ class DBG {
         .debug TD {
             padding: 3px;
             background-color: #fff;
+            color: #000;
         }
 
         .debug TH {
