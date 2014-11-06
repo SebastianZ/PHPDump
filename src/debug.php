@@ -74,7 +74,7 @@ class DBG {
             border-color: #060;
         }
 
-        .indexedArray .label {
+        .indexedArray > TBODY > TR > .label {
             background-color: #cfc;
         }
 
@@ -88,7 +88,7 @@ class DBG {
             border-color: #00c;
         }
 
-        .associativeArray .label {
+        .associativeArray > TBODY > TR > .label {
             background-color: #cdf;
         }
 
