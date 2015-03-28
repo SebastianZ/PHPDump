@@ -581,7 +581,7 @@ OUTPUT;
 OUTPUT;
 
 		      foreach ($props as $prop) {
-		        if (prop->name === '__been_here')
+		        if ($prop->name === '__been_here')
 		          continue;
 
 		        $prop->setAccessible(true);
